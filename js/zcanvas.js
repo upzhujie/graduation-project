@@ -1,4 +1,3 @@
-
 /**
 	 * [canvas lib]
 	 * @author zj
@@ -9,6 +8,9 @@ function Z(obj) {
 
     if(!obj.el && !typeof obj.el == 'string') {
         throw "element is not defined"
+    }
+    if(!this instanceof Z){
+        return new Z(obj);
     }
     let def = {
         el: '',
@@ -30,6 +32,19 @@ Z.prototype = {
         this.ctx = this.dom.getContext(this.type);
         return this;
     },
+
+    /**
+     * 
+     * @param {object} obj {
+     *      line(0,0)->line(100,20),20s
+     *          
+     * }
+     */
+    // animate(obj){
+    //     this.ctx.save();
+    // },
+
+
 
     /** 直角三角形接口
      * 
@@ -67,9 +82,43 @@ Z.prototype = {
         return this;
     },
 
+    /**
+     * 绘制矩形
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} width 
+     * @param {number} height 
+     * @param {string} style 
+     * @param {string} method 'fill'/'stroke'/'clear'
+     */
+    rect(x,y,width,height,method = 'stroke',style = ''){
+        this.ctx[method + 'style'] = style || this.ctx[method + 'style'];
+        this.ctx[method + 'Rect'](x,y,width,height);
+        return this;
+    },
+
+   
+    /**
+     * 绘制圆弧
+     * @param {number} x 
+     * @param {number} y 
+     * @param {number} r 
+     * @param {number} startAngle 
+     * @param {number} endAngle 
+     * @param {boolean} anticlockwise  顺时针 false or 逆时针 true
+     */
+    circle(x,y,r,startAngle = 0,endAngle = 360,anticlockwise = false){
+        this.ctx.restore();
+        startAngle = (Math.PI / 180) * startAngle;
+        endAngle = (Math.PI / 180) * endAngle;
+        this.ctx.arc(x,y,r,startAngle,endAngle,anticlockwise);
+        this.ctx.save();
+        return this;
+    },
+
     
     /**     多边形通用
-     * @param {*} obj 
+     * @param {object} obj 
      * {
      *     point:[
      *          [],[],[]
@@ -106,7 +155,6 @@ Z.prototype = {
      * obj = {
      *  start:[0,0], 
      *  lineWidth: 20, def 1
-     *  color:'', def #000
      * }
      */
     line(obj) {
@@ -122,7 +170,7 @@ Z.prototype = {
         this.ctx.beginPath();
         this.ctx.moveTo(def.start[0],def.start[1]); 
         this.ctx.lineWidth = def.lineWidth;
-        this.ctx.strokeStyle = def.color;
+        this.ctx.save();
         return this;
     },  
     /**
@@ -161,9 +209,20 @@ Z.prototype = {
         if(obj || !typeof obj.color == 'undefined') {
             this.ctx.fillStyle = obj.color;
         }
+        this.ctx.restore();
         this.ctx.fill();
         return this;
     },
+
+    save(){
+        this.ctx.save();
+        return this;
+    },
+    /**
+     * 
+     * @param {object} def default object
+     * @param {object} obj param object
+     */
     extend(def,obj){
         for(let i in def){
             def[i] = obj[i] || def[i];
