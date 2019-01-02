@@ -44,6 +44,8 @@ function tree(x,y,r,len,Angel,deep){
 
     c.circle(x,y,_r).close().fill({
         color:'#f00'
+    }).stroke({
+        color:'#fff'
     })
 
     if(deep < 1){
