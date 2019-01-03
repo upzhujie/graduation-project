@@ -1,16 +1,14 @@
 
-function avl(n = 4){
+function avl(n = 2){
     if(n < 0 && n > 10){
         return;
     }
-    if(this instanceof avl){
-        return new avl(n);
-    }
+    
     let newValue = num();
     this.startPoint = new node(newValue);
     this.n = n;
     this.point = this.startPoint;
-    this.build(n);
+    this.build(this.point,n);
 }
 
 
@@ -18,10 +16,11 @@ function avl(n = 4){
 
 avl.prototype = {
     construction: avl,
-    build(n){
-        if(n < 0){
+    build(point,n){
+        if(!n){
             return;
         }
+        n--;
         let _node = {
             left:{
                 flag:false,
@@ -32,21 +31,38 @@ avl.prototype = {
                 value:0
             }
         }
-        while(1){
-            let newNum = num();
-            if(_node.left.flag && _node.right.flag){
-                break;
-            }
-            if(newNum < this.point.value){
-                _node.left.flag = true;
-                _node.left.value = newNum;
-            }else if(newNum > this.point.value){
-                _node.right.flag = true;
-                _node.right.value = newNum;
-            }
-        }
+        let _point = this.point;
+        let _flagL = 1,
+            _flagR = 1,
+            temp = 0;
         
+        
+        if(_flagL){
+            while(1){
+                temp = num();
+                if(temp < _point.value){
+                    break;
+                }
+            }
+            _point.left = new node(temp);
+            this.point = _point.left;
+            this.build(_point.left,n);
+        }
+        if(_flagR){
+            while(1){
+                temp = num();
+                if(temp > _point.value){
+                    break;
+                }
+            }
+            _point.right = new node(temp);
+            this.point = _point.right;
+            this.build(_point.right,n);
+        }
 
+    },
+    show(){
+        console.log(this.startPoint);
     }
 }
 

@@ -14,6 +14,8 @@ window.onload = () => {
     let n = 5;
     tree(200,20,10,50,60,5);
 
+    let al = new avl();
+    al.show();
 
 
     // c.polygon({
