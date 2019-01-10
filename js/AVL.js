@@ -9,6 +9,7 @@ function avl(n = 2){
     this.n = n;
     this.point = this.startPoint;
     this.build(this.point,n);
+    this.arr = [];
 }
 
 
@@ -60,6 +61,49 @@ avl.prototype = {
             this.build(_point.right,n);
         }
 
+    },
+    // 左旋
+    rotateLeft(){
+        let temp = this.startPoint.right.left;
+        let _startPoint = this.startPoint;
+        this.startPoint = this.startPoint.right;
+        _startPoint.right = temp;
+        this.startPoint.left = _startPoint;
+    },
+    // 右旋
+    rotateRight(){
+        let temp = this.startPoint.left.right;
+        let _startPoint = this.startPoint;
+        this.startPoint = this.startPoint.left;
+        _startPoint.left = temp;
+        this.startPoint.right = _startPoint;
+    },
+    //删除节点
+    delete(val){
+        if(!n && typeof n == 'undefined'){
+            return;
+        }
+        let index = this.arr.indexOf(val);
+
+    },
+    //求取节点最大深度
+    deep(node){
+        if(typeof node.left == 'undefined' && typeof node.right == 'undefined'){
+            return 0;
+        }
+        let deepL = this.deep(node.left);
+        let deepR = this.deep(node.right);
+        return deepL > deepR? deepL + 1: deepR + 1;
+    },
+    //判断是否是avl树
+    isAvl(node){
+        let deepL = typeof node.left == 'undefined'? 0: this.deep(node.left);
+        let deepR = typeof node.right == 'undefined'? 0: this.deep(node.right);
+        if(Math.abs(deepL - deepR) > 1){
+            return false;
+        }
+        this.isAvl(node.left);
+        this.isAvl(node.right);
     },
     show(){
         console.log(this.startPoint);
