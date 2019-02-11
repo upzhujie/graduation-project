@@ -1,5 +1,5 @@
 
-function avl(n = 2){
+function avl(n = 3){
     if(n < 0 && n > 10){
         return;
     }
@@ -22,21 +22,10 @@ avl.prototype = {
             return;
         }
         n--;
-        let _node = {
-            left:{
-                flag:false,
-                value:0
-            },
-            right:{
-                flag:false,
-                value:0
-            }
-        }
         let _point = this.point;
         let _flagL = 1,
             _flagR = 1,
             temp = 0;
-        
         
         if(_flagL){
             while(1){
@@ -46,7 +35,9 @@ avl.prototype = {
                 }
             }
             _point.left = new node(temp);
+            _point.left.parent = _point;
             this.point = _point.left;
+
             this.build(_point.left,n);
         }
         if(_flagR){
@@ -57,10 +48,10 @@ avl.prototype = {
                 }
             }
             _point.right = new node(temp);
+            _point.right.parent = _point;
             this.point = _point.right;
             this.build(_point.right,n);
         }
-
     },
     // 左旋
     rotateLeft(){
@@ -78,7 +69,7 @@ avl.prototype = {
         _startPoint.left = temp;
         this.startPoint.right = _startPoint;
     },
-    //删除节点
+    //删除节点 -> todo
     delete(val){
         if(!n && typeof n == 'undefined'){
             return;
@@ -95,7 +86,7 @@ avl.prototype = {
         let deepR = this.deep(node.right);
         return deepL > deepR? deepL + 1: deepR + 1;
     },
-    //判断是否是avl树
+    //判断是否是avl树  -> todo
     isAvl(node){
         let deepL = typeof node.left == 'undefined'? 0: this.deep(node.left);
         let deepR = typeof node.right == 'undefined'? 0: this.deep(node.right);
@@ -105,6 +96,29 @@ avl.prototype = {
         this.isAvl(node.left);
         this.isAvl(node.right);
     },
+    // 搜索操作，返回从节点走过的路径[1,2,1,0]  1 左   2 右
+    search(val){
+        let ret = [],
+            thisPoint = this.startPoint;
+        while(thisPoint){
+            if(thisPoint.value == val){
+                ret.push(0);
+                break;
+            }else if(thisPoint > val){
+                ret.push(2);
+                if(typeof thisPoint.right == 'undefined'){
+                    break;
+                }
+                thisPoint = thisPoint.right;
+            }else{
+                ret.push(1);
+                if(typeof thisPoint.left == 'undefined'){
+                    break;
+                }
+                thisPoint = thisPoint.left;
+            }
+        }
+    },
     show(){
         console.log(this.startPoint);
     }
@@ -112,10 +126,11 @@ avl.prototype = {
 
 
 
-function node(n,left = '',right = ''){
+function node(n,left = '',right = '',parent = ''){
     this.value = n;
     this.left = left;
     this.right = right;
+    this.parent = parent;
 }
 node.prototype = {
     construction: node,
