@@ -13,10 +13,9 @@ function avl(n = 3){
 }
 
 
-
-
 avl.prototype = {
     construction: avl,
+    // 生成树 未排序
     build(point,n){
         if(!n){
             return;
@@ -61,7 +60,8 @@ avl.prototype = {
         _startPoint.right = temp;
         this.startPoint.left = _startPoint;
     },
-    // 右旋
+
+    // 右旋   ******************** 有问题
     rotateRight(){
         let temp = this.startPoint.left.right;
         let _startPoint = this.startPoint;
@@ -69,6 +69,7 @@ avl.prototype = {
         _startPoint.left = temp;
         this.startPoint.right = _startPoint;
     },
+
     //删除节点 -> todo
     delete(val){
         if(!n && typeof n == 'undefined'){
@@ -77,6 +78,7 @@ avl.prototype = {
         let index = this.arr.indexOf(val);
 
     },
+
     //求取节点最大深度
     deep(node){
         if(typeof node.left == 'undefined' && typeof node.right == 'undefined'){
@@ -86,6 +88,7 @@ avl.prototype = {
         let deepR = this.deep(node.right);
         return deepL > deepR? deepL + 1: deepR + 1;
     },
+
     //判断是否是avl树  -> todo
     isAvl(node){
         let deepL = typeof node.left == 'undefined'? 0: this.deep(node.left);
@@ -96,6 +99,7 @@ avl.prototype = {
         this.isAvl(node.left);
         this.isAvl(node.right);
     },
+
     // 搜索操作，返回从节点走过的路径[1,2,1,0]  1 左   2 右
     search(val){
         let ret = [],
