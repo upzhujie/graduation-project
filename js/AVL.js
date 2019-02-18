@@ -4,12 +4,15 @@ function avl(n = 3){
         return;
     }
     
-    let newValue = num();
-    this.startPoint = new node(newValue);
+    // let newValue = num();
+    this.startPoint = new node(10);
     this.n = n;
     this.point = this.startPoint;
-    this.build(this.point,n);
     this.arr = [];
+    this.arr.push(this.startPoint.value);
+    this.arr.push(9999);
+    this.arr.unshift(-1);
+    this.build(this.point,n);
 }
 
 
@@ -26,30 +29,51 @@ avl.prototype = {
             _flagR = 1,
             temp = 0;
         
+
+        let index = this.arr.indexOf(_point.value);
+        let count = 0;
+
         if(_flagL){
             while(1){
+                
                 temp = num();
-                if(temp < _point.value){
+                count ++;
+                // debugger;
+                if(temp < _point.value && temp > this.arr[index - 1]){
+                    this.arr.splice(index,0,temp);
+                    _point.left = new node(temp);
+                    _point.left.parent = _point;
+                    this.point = _point.left;
+                    this.build(_point.left,n);
+                    break;
+                }
+                if(count > 10){
+                    count = 0;
                     break;
                 }
             }
-            _point.left = new node(temp);
-            _point.left.parent = _point;
-            this.point = _point.left;
-
-            this.build(_point.left,n);
         }
+        index = this.arr.indexOf(_point.value);
         if(_flagR){
             while(1){
+
+                count ++;
+
                 temp = num();
-                if(temp > _point.value){
+                if(temp > _point.value && temp < this.arr[index + 1]){
+                    // 排序数组中向当前项之后插入该数字
+                    this.arr.splice(index + 1, 0, temp);
+                    // 创建右子树
+                    _point.right = new node(temp);
+                    _point.right.parent = _point;
+                    this.point = _point.right;
+                    this.build(_point.right,n);
+                    break;
+                }
+                if(count > 10){
                     break;
                 }
             }
-            _point.right = new node(temp);
-            _point.right.parent = _point;
-            this.point = _point.right;
-            this.build(_point.right,n);
         }
     },
     // 左旋
