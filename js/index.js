@@ -10,10 +10,13 @@ window.onload = () => {
 
     let startPoint = al.startPoint;
 
-    let target = 2;
+    let target = 18;
     let n = undefined;
-    while(!n){
+    while(1){
         n = al.find(target--);
+        if (n !== -1) {
+            break;
+        }
     }
 
 

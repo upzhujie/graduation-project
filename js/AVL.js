@@ -92,21 +92,22 @@ avl.prototype = {
         this.startPoint.right = _startPoint;
     },
 
-    // 深度遍历查找
+    // 先序遍历, 深度遍历查找
     find(val){
-        let stack = [];
-        let n = 0;
-        let cur = this.startPoint;
-        stack.push(cur);
+        let stack = [],
+            n = 0,
+            cur = '';
+
+        stack.push(this.startPoint);
         while(stack.length){
             cur = stack.pop();
             if (cur.value == val) {
                 return n;
             }
-            if (cur.right != '') {
+            if (cur.right) {
                 stack.push(cur.right);
             }
-            if (cur.left != '') {
+            if (cur.left) {
                 stack.push(cur.left);
             }
             n++;
@@ -202,7 +203,7 @@ node.prototype = {
 }
 
 function num(){
-    return Math.ceil(Math.random()*20);
+    return Math.ceil(Math.random() * 20);
 }
 function ran8(){
     return Math.random()<0.8;
