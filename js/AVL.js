@@ -18,7 +18,7 @@ function avl(n = 3){
 
 avl.prototype = {
     construction: avl,
-    // 生成树 未排序
+    // 生成树
     build(point,n){
         if(!n){
             return;
@@ -29,16 +29,15 @@ avl.prototype = {
             _flagR = 1,
             temp = 0;
         
-
+ 
         let index = this.arr.indexOf(_point.value);
         let count = 0;
 
         if(_flagL){
             while(1){
-                
                 temp = num();
                 count ++;
-                // debugger;
+                // 插入左子树
                 if(temp < _point.value && temp > this.arr[index - 1]){
                     this.arr.splice(index,0,temp);
                     _point.left = new node(temp);
@@ -56,7 +55,6 @@ avl.prototype = {
         index = this.arr.indexOf(_point.value);
         if(_flagR){
             while(1){
-
                 count ++;
 
                 temp = num();
@@ -113,15 +111,27 @@ avl.prototype = {
         return deepL > deepR? deepL + 1: deepR + 1;
     },
 
-    //判断是否是avl树  -> todo
+    //判断是否是avl树  
     isAvl(node){
-        let deepL = typeof node.left == 'undefined'? 0: this.deep(node.left);
-        let deepR = typeof node.right == 'undefined'? 0: this.deep(node.right);
+        var flag = true;
+        let deepL = node.left == ''? 0: this.deep(node.left);
+        let deepR = node.right == ''? 0: this.deep(node.right);
         if(Math.abs(deepL - deepR) > 1){
             return false;
+        }else{
+            if (node.left) {
+                flag = this.isAvl(node.left);
+                if (!flag) {
+                    return false;
+                }
+            }
+            if (node.right) {
+                flag = this.isAvl(node.right);    
+            }
         }
-        this.isAvl(node.left);
-        this.isAvl(node.right);
+        return flag;
+
+        
     },
 
     // 搜索操作，返回从节点走过的路径[1,2,1,0]  1 左   2 右

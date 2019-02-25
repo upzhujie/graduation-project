@@ -1,6 +1,13 @@
 
 window.onload = () => {
-    let al = new avl();
+    let al = null;
+    while(1){
+        al = new avl();
+        if (al.isAvl(al.startPoint)) {
+            break;
+        }
+    }
+
     let startPoint = al.startPoint;
 
     stage = new Konva.Stage({
@@ -14,16 +21,17 @@ window.onload = () => {
     let layer = stage.children[1];
     let b = layer.children[0];
     let c = layer.children[1];
+
+    // 一个layer中的group的动画
     var anim0 = new Konva.Animation(function(frame) {
         b.setX(100 * Math.sin(frame.time * 2 * Math.PI / 2000) + 200);
     }, layer);
     var anim1 = new Konva.Animation(function(frame) {
         c.setX(100 * Math.sin(frame.time * 2 * Math.PI / 2000) + 200);
     }, layer);
-    console.log(layer);
 
-    anim0.start();
-    anim1.start();
+    // anim0.start();
+    // anim1.start();
 }
 // fx 1 左节点   2 右节点
 function tree(point,x,y,r,l,angle = 0,fx = 0){
