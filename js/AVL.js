@@ -92,6 +92,30 @@ avl.prototype = {
         this.startPoint.right = _startPoint;
     },
 
+    // 深度遍历查找
+    find(val){
+        let stack = [];
+        let n = 0;
+        let cur = this.startPoint;
+        stack.push(cur);
+        while(stack.length){
+            cur = stack.pop();
+            if (cur.value == val) {
+                return n;
+            }
+            if (cur.right != '') {
+                stack.push(cur.right);
+            }
+            if (cur.left != '') {
+                stack.push(cur.left);
+            }
+            n++;
+            if (n >= this.arr.length - 2) {
+                return -1;
+            }
+        }
+    },
+
     //删除节点 -> todo
     delete(val){
         if(!n && typeof n == 'undefined'){
